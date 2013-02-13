@@ -23,6 +23,7 @@ import os
 import subprocess
 import sys
 import re
+import urllib
 
 logger = logging.getLogger(__name__)
 
@@ -73,6 +74,9 @@ def getopts():
                        help='work verbosely')
 
     general.add_argument('-x', '--trace', action='store_true', help='trace')
+        
+    general.add_argument('-r','--enable-remote-layers', dest='remote', help='Grab the weboslayers.py file from a remote url (default: none)',
+                         default="")
 
     variations = parser.add_argument_group('Build Instructions')
 
@@ -218,8 +222,10 @@ def downloadprojects(srcdir,verbosity):
       cmd = 'git clone -n {}'.format(URLS[layer])
       if echo_check_call(cmd,True):
          raise('Error: running {}'.format(cmd))
-
-      cmd = 'cd {0}; git checkout -B {1} {2}'.format(DIRNAME[layer], BRANCH, COMMIT)
+      if not (COMMIT and BRANCH):
+         cmd = 'cd {0}; git checkout {1} {2}'.format(DIRNAME[layer], BRANCH, COMMIT)
+      else:
+         cmd = 'cd {0}; git checkout -B {1} {2}'.format(DIRNAME[layer], BRANCH, COMMIT)
       if echo_check_call(cmd,True):
           raise('Error: running {}'.format(cmd))
 
@@ -322,6 +328,8 @@ if __name__ == '__main__':
     if len(options.machines) == 0:
         options.machines += ['qemux86']
         #parser.error('at least one MACHINE argument is required')
+    if options.remote:
+        urllib.urlretrieve (options.remote, "weboslayers.py")
 
     if options.trace:
         logger = logging.getLogger(__name__)
