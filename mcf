@@ -23,7 +23,7 @@ import os
 import subprocess
 import sys
 import re
-import urllib
+import urllib.request
 
 logger = logging.getLogger(__name__)
 
@@ -170,6 +170,8 @@ def readlayers(path):
         if URLS[p[0]]:
            location_to_dirname(p[0], URLS[p[0]])
         if LOCATIONS[p[0]]:
+           if "@CWD@" in LOCATIONS[p[0]]:
+               LOCATIONS[p[0]]=LOCATIONS[p[0]].replace("@CWD@",os.getcwd())
            location_to_dirname(p[0], LOCATIONS[p[0]])
 
    PRIORITYORDER.sort()
@@ -329,7 +331,7 @@ if __name__ == '__main__':
         options.machines += ['qemux86']
         #parser.error('at least one MACHINE argument is required')
     if options.remote:
-        urllib.urlretrieve (options.remote, "weboslayers.py")
+        urllib.request.urlretrieve (options.remote, "weboslayers.py")
 
     if options.trace:
         logger = logging.getLogger(__name__)
