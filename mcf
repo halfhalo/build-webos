@@ -266,7 +266,7 @@ def parseCollections (srcdir):
           raise("Error:", 'Missing layer directory!')  
 
 def writebblayersconf(sourcedir, machine):
-    f = open(os.path.join(sourcedir, "BUILD-{0}".format(machine), "conf", "bblayers.conf"), 'a')
+    f = open(os.path.join(sourcedir, "BUILD".format(machine), "conf", "bblayers.conf"), 'a')
     f.write('\n')
     xlayer = ""
     for p in PRIORITYORDER:
@@ -396,11 +396,11 @@ if __name__ == '__main__':
     echo_check_call('/bin/chmod a+x mcf.status', options.verbose)
 
     for machine in options.machines:
-        logger.info('Configuring in BUILD-{}'.format(machine))
+        logger.info('Configuring in BUILD'.format(machine))
         logger.info('configure is {}'.format(configure))
 
-        cmd = '([ -d BUILD-{} ] || mkdir BUILD-{})'.format(machine, machine)
-        cmd += ' && (cd BUILD-{} && PWD= @configure@ \
+        cmd = '([ -d BUILD ] || mkdir BUILD)'.format(machine, machine)
+        cmd += ' && (cd BUILD && PWD= @configure@ \
            --enable-bb-number-threads=@bb_number_threads@ \
            --enable-parallel-make=@parallel_make@ \
            --enable-premirror=@premirror@ \
