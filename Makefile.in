@@ -39,7 +39,7 @@ tags TAGS: force
 
 define convenience
 $(1)-$(2)-%:
-	cd BUILD-$(1) && $(TIME) $(MAKE) \
+	cd BUILD && $(TIME) $(MAKE) \
 		CONTINUOUS_BUILD_MARK=$(CONTINUOUS_BUILD_MARK) \
 		BBFLAGS='$(BBFLAGS)' \
 		$(2)-$$* # convenience rule for task $(2) of component $$* for $(1)
@@ -96,14 +96,14 @@ remote-$(1)@$(1)-%:
 		$(1)-$$*"
 
 $(1)/%:
-	cd BUILD-$(1) && $(TIME) $(MAKE) \
+	cd BUILD && $(TIME) $(MAKE) \
 		CONTINUOUS_BUILD_MARK=$(CONTINUOUS_BUILD_MARK) \
 		BBFLAGS='$(BBFLAGS)' \
 		$$* # component $$* for $(1)
 
 install-$(1):
 	[ -d $(INSTALLDIR)/$(1) ] || mkdir -p $(INSTALLDIR)/$(1)
-	cd BUILD-$(1) && $(TIME) $(MAKE) \
+	cd BUILD && $(TIME) $(MAKE) \
 		CONTINUOUS_BUILD_MARK=$(CONTINUOUS_BUILD_MARK) \
 		BBFLAGS='$(BBFLAGS)' \
 		install \
@@ -111,7 +111,7 @@ install-$(1):
 
 installnew-$(1):
 	[ -d $(INSTALLDIR)/$(1) ] || mkdir -p $(INSTALLDIR)/$(1)
-	cd BUILD-$(1) && $(TIME) $(MAKE) \
+	cd BUILD && $(TIME) $(MAKE) \
 		CONTINUOUS_BUILD_MARK=$(CONTINUOUS_BUILD_MARK) \
 		BBFLAGS='$(BBFLAGS)' \
 		INSTALLSINCE=$(INSTALLSINCE) \
