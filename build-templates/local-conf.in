@@ -469,3 +469,4 @@ OPENWEBOS_GIT_REPO = "@privateinternalcomponentmirror@"
 COVERAGE_BUILD = "0"
 
 
+INHERIT += " rm_work"
